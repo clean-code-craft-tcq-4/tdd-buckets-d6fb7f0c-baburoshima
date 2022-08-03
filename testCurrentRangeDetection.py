@@ -1,7 +1,7 @@
 import unittest
 import currentRangeDetection
 
-class TypewiseTest(unittest.TestCase):
+class currentRangeDetectionTest(unittest.TestCase):
   def test_IsRangeOk(self):
     self.assertTrue(currentRangeDetection.IsRangeOk([0,99]) == True)
     self.assertFalse(currentRangeDetection.IsRangeOk([-1,99]) == False)
@@ -22,6 +22,7 @@ class TypewiseTest(unittest.TestCase):
 
   def test_getcurrentvalues(self):
     self.assertTrue(currentRangeDetection.getcurrentvalues([1,5,6,6,7]) == "Range, Readings"+'\n'+"1-1, 1"+'\n'+"5-7, 4")
+    self.assertTrue(currentRangeDetection.getcurrentvalues([1,5,6,6.5,7]) == "Range, Readings"+'\n'+"1-1, 1"+'\n'+"5-7, 4")
     self.assertTrue(currentRangeDetection.getcurrentvalues([-1, 101]) == None)
 
 
