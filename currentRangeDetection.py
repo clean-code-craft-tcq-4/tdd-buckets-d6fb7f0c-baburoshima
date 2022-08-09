@@ -13,9 +13,9 @@ def getcurrentvalues(CurrentSamples):
 
 def IsRangeOk(values):
     for item in values:
-        if item > MAX_LIMIT:
-            return False
-    return True
+        if item in range (MIN_LIMIT, MAX_LIMIT):
+            return True
+    return False
 
 def get_sorted_Samples(CurrentSamples):
     sorted_array = sorted(CurrentSamples, reverse=False)
@@ -23,17 +23,17 @@ def get_sorted_Samples(CurrentSamples):
 
 def get_CurrentRangeslist(sorted_CurrentSamples):
     interval = 1
-    temp_arr = []
+    CurrentRanges_PrepList = []
     CurrentRanges_list = []
     for index in range(0, len(sorted_CurrentSamples)):
         if (sorted_CurrentSamples[index] - sorted_CurrentSamples[index - interval] > interval):
-            CurrentRanges_list.append(temp_arr)
-            temp_arr = []
-            temp_arr.append(sorted_CurrentSamples[index])
+            CurrentRanges_list.append(CurrentRanges_PrepList)
+            CurrentRanges_PrepList = []
+            CurrentRanges_PrepList.append(sorted_CurrentSamples[index])
             continue
         else:
-            temp_arr.append(sorted_CurrentSamples[index])
-    CurrentRanges_list.append(temp_arr)
+            CurrentRanges_PrepList.append(sorted_CurrentSamples[index])
+    CurrentRanges_list.append(CurrentRanges_PrepList)
     return CurrentRanges_list
 
 
@@ -46,10 +46,3 @@ def output_to_csv(CurrentRanges_list):
     output_csv_string = "\n".join(csv_string_list)
     return output_csv_string
 
-
-
-getcurrentvalues([3, 3, 5, 4, 7,8, 10, 11,12])
-getcurrentvalues([3, 3, 5, 4, 10, 11,12])
-getcurrentvalues([4,5])
-getcurrentvalues([3])
-getcurrentvalues([5,6,6,7,1])
