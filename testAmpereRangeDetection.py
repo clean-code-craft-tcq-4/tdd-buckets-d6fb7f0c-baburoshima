@@ -3,33 +3,6 @@ from AmpereRangeDetection import *
 
 class AmpereRangeDetectionTest(unittest.TestCase):
   
-  
-  
-  
-
-  
-  
-  
-  
-
-  
-  
-  
-
-  
-  
-  
-  
-
-  
-  
-  
-  
-
-  
-  
-  
-
   def test_convertion_AmpereSamples(self):
     self.assertTrue(convert_Samples_list([5,6,6,7,1])[0] == [0, 1, 0, 0, 0, 5, 6, 7, 0, 0, 0, 0, 0, 0, 0])
     self.assertFalse(convert_Samples_list([5,6,6,7,1])[0] == [0, 1, 0, 0, 0, 5, 6, 7, 8, 0, 0, 0, 0, 0, 0])    
@@ -67,34 +40,28 @@ class AmpereRangeDetectionTest(unittest.TestCase):
     getAmperevalues([8,8])
     getAmperevalues([5,6,6,7,1])
 #----------------------Test cases for extension----------------------------#
-  def test_12bit_errorreading(self):
-    self.assertTrue(Is_12bit_SensorInputOk(4095) == False)
-    self.assertTrue(Is_12bit_SensorInputOk(4094) == True)
-    self.assertTrue(Is_12bit_SensorInputOk(0) == True)
+  def test_errorreading(self):
+    self.assertTrue(Is_SensorInputOk(4095,12) == False)
+    self.assertTrue(Is_SensorInputOk(4094,12) == True)
+    self.assertTrue(Is_SensorInputOk(0,12) == True)
+    self.assertTrue(Is_SensorInputOk(1023,10) == False)
+    self.assertTrue(Is_SensorInputOk(1022,10) == True)
+    self.assertTrue(Is_SensorInputOk(0,10) == True)
 
-  def test_12bit_to_Ampere_Conversion(self):
-    self.assertTrue(Convert_12bit_to_Ampere(1146) == 3)
-    self.assertTrue(Convert_12bit_to_Ampere(4094) == 10)
-    self.assertFalse(Convert_12bit_to_Ampere(1146) == 2.79)
+  def test_Digital_to_Ampere_Conversion(self):
+    self.assertTrue(Convert_Digital_to_Ampere(1146,12) == 3)
+    self.assertTrue(Convert_Digital_to_Ampere(4094,12) == 10)
+    self.assertFalse(Convert_Digital_to_Ampere(1146,12) == 2.79)
+    self.assertTrue(Convert_Digital_to_Ampere(511,10) == 0)
+    self.assertTrue(Convert_Digital_to_Ampere(1022,10) == 15)
+    self.assertFalse(Convert_Digital_to_Ampere(0,10) == -15)
     
-  def test_12bitInputArray_to_AmpereArray_Conversion(self):
-    self.assertTrue(Convert_12bitArray_to_AmpereArray([2047,2456,2456,2865,410]) == [5,6,6,7,1])
-    self.assertTrue(Convert_12bitArray_to_AmpereArray([4095]) == None)
-    self.assertTrue(Convert_12bitArray_to_AmpereArray([1230,2047,1628]) == [3,5,4] )
-
-  def test_10bit_errorreading(self):
-    self.assertTrue(Is_10bit_SensorInputOk(1023) == False)
-    self.assertTrue(Is_10bit_SensorInputOk(1022) == True)
-    self.assertTrue(Is_10bit_SensorInputOk(0) == True)
-
-  def test_10bit_to_Ampere_Conversion(self):
-    self.assertTrue(Convert_10bit_to_Ampere(511) == 0)
-    self.assertTrue(Convert_10bit_to_Ampere(1022) == 15)
-    self.assertFalse(Convert_10bit_to_Ampere(0) == -15)
-
-  def test_10bitInputArray_to_AmpereArray_Conversion(self):
-    self.assertTrue(Convert_10bitArray_to_AmpereArray([681,715,715,750,545]) == [5,6,6,7,1])
-    self.assertTrue(Convert_10bitArray_to_AmpereArray([409,341,375]) == [3,5,4] )
-    self.assertTrue(Convert_10bitArray_to_AmpereArray([1023]) == None )
+  def test_DigitalInputArray_to_AmpereArray_Conversion(self):
+    self.assertTrue(Convert_DigitalInput_to_AmpereArray([2047,2456,2456,2865,410],12) == [5,6,6,7,1])
+    self.assertTrue(Convert_DigitalInput_to_AmpereArray([4095],12) == None)
+    self.assertTrue(Convert_DigitalInput_to_AmpereArray([1230,2047,1628],12) == [3,5,4] )
+    self.assertTrue(Convert_DigitalInput_to_AmpereArray([681,715,715,750,545],10) == [5,6,6,7,1])
+    self.assertTrue(Convert_DigitalInput_to_AmpereArray([409,341,375],10) == [3,5,4] )
+    self.assertTrue(Convert_DigitalInput_to_AmpereArray([1023],10) == None )
 
 unittest.main()

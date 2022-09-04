@@ -1,6 +1,5 @@
 import itertools
-from A2DConversion_12bit import *
-from A2DConversion_10bit import *
+from A2DConversion import *
 
 MAX_LIMIT = 15
 MIN_LIMIT = 0
@@ -54,22 +53,20 @@ def output_to_csv(AmpereRanges_list,AmpereRanges_SamplesCount):
     output_csv_string = "\n".join(csv_string_list)
     return output_csv_string
 
-def Convert_12bitArray_to_AmpereArray(sensorReadingInputs):
+def Convert_DigitalInput_to_AmpereArray(sensorReadingInputs, A2Dbits):
     AmpereSamples = []
     for item in sensorReadingInputs:
-        if Is_12bit_SensorInputOk(item):
-            AmpereSamples.append(Convert_12bit_to_Ampere(item))
+        if Is_SensorInputOk(item,A2Dbits):
+            AmpereSamples.append(Convert_Digital_to_Ampere(item,A2Dbits))
         else:
             return None
     getAmperevalues(AmpereSamples)
     return AmpereSamples
 
-def Convert_10bitArray_to_AmpereArray(sensorReadingInputs):
-    AmpereSamples = []
-    for item in sensorReadingInputs:
-        if Is_10bit_SensorInputOk(item):
-            AmpereSamples.append(Convert_10bit_to_Ampere(item))
-        else:
-            return None
-    getAmperevalues(AmpereSamples)
-    return AmpereSamples
+
+
+
+
+
+
+
